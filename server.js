@@ -1,3 +1,8 @@
+require("dotenv").config();
+
+console.log("ENV TEST:", process.env.JWT_SECRET);
+
+require("dotenv").config();
 const app = require("./src/app");
 const { PORT } = require("./config/config.js");
 const db = require("./database/db");

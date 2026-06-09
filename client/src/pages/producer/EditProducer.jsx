@@ -40,9 +40,9 @@ const EditProducer = () => {
       }
     }
   };
-  useEffect(() => {
-    onLoad();
-  }, [id, producers]);
+ useEffect(() => {
+  onLoad();
+}, [id]);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -61,6 +61,8 @@ const EditProducer = () => {
     setLoading(true);
     try {
       const { name, gender, dob, bio } = formData;
+      console.log("Form Data Before Submit:", formData);
+
       let res;
       if (imageFile?.originFileObj) {
         const payload = new FormData();
@@ -69,6 +71,8 @@ const EditProducer = () => {
         payload.append("dob", dob ? dob.format("YYYY-MM-DD") : "");
         payload.append("bio", bio);
         payload.append("image", imageFile.originFileObj);
+        console.log("Update Payload:", payload);
+console.log("Producer ID:", id);
         res = await UpdateProducer(id, payload);
       } else {
         const payload = {
@@ -80,16 +84,21 @@ const EditProducer = () => {
         };
         res = await UpdateProducer(id, payload);
       }
-      if (res.data.id == id) {
-        showToast({
-          message: res.message || "updated successfully",
-          type: "success",
-        });
-        console.log(res.message || "Producer updated successfully");
-        const list = producers.map((d) => (d.id == id ? res.data : d));
-        updateProducers(list);
-        navigate(-1);
-      }
+console.log("Update Response:", res);
+
+if (res?.data?.id == id) {
+    showToast({
+      message: res.message || "updated successfully",
+      type: "success",
+    });
+
+    await fetchProducers();
+
+    console.log("Updated Producer:", res.data);
+    console.log("Producer ID:", id);
+
+    navigate(-1);
+}
     } catch (err) {
       showToast({
         message: err?.response?.data?.message || "Something went wrong",
@@ -153,15 +162,19 @@ const EditProducer = () => {
           <form onSubmit={handleSubmit} className="edit-producer-form-section">
             <div className="edit-producer-form-row">
               <label className="edit-producer-label">Name</label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                required
-                className="edit-producer-input"
-              />
+             <input
+  type="text"
+  value={formData.name}
+  onChange={(e) => {
+    console.log("Typing:", e.target.value);
+    setFormData({
+      ...formData,
+      name: e.target.value,
+    });
+  }}
+  required
+  className="edit-producer-input"
+/>
             </div>
             <div className="edit-producer-form-row">
               <label className="edit-producer-label">Gender</label>
@@ -181,7 +194,7 @@ const EditProducer = () => {
             </div>
             <div className="edit-producer-form-row">
               <label className="edit-producer-label">Date of Birth</label>
-              <input
+              {/* <input
                 type="date"
                 value={formData.dob ? formData.dob.format("YYYY-MM-DD") : ""}
                 onChange={(e) =>
@@ -189,7 +202,20 @@ const EditProducer = () => {
                 }
                 required
                 className="edit-producer-input"
-              />
+              /> */}
+
+              <input
+  type="text"
+  value={formData.name}
+  onChange={(e) => {
+    console.log("Typing:", e.target.value);
+    setFormData({
+      ...formData,
+      name: e.target.value,
+    });
+  }}
+  className="edit-producer-input"
+/>
             </div>
             <div className="edit-producer-form-row">
               <label className="edit-producer-label">Bio</label>

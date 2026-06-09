@@ -46,6 +46,8 @@ const EditMovie = () => {
         data = movies.find((d) => d.id == id);
       }
       if (data) {
+          console.log("Movie Data:", data);
+
         setFormData({
           name: data.name,
           yearOfRelease: data.yearOfRelease,

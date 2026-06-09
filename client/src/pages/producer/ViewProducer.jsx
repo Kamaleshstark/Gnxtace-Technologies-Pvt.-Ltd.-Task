@@ -14,13 +14,15 @@ const ViewProducerPage = () => {
   const [producer, setProducer] = useState(null);
 
   const onLoad = async () => {
-    const data = producers.find((d) => d.id == id);
-    if (!data) await fetchProducers();
-    if (data) {
-      setProducer(producers.find((a) => a.id == id));
-    }
-  };
+  let data = producers.find((d) => d.id == id);
 
+  if (!data) {
+    await fetchProducers();
+    return;
+  }
+
+  setProducer(data);
+};
   useEffect(() => {
     onLoad();
   }, [id, producers]);

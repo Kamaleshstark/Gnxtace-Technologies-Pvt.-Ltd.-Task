@@ -3,9 +3,9 @@ const jwt = require("jsonwebtoken");
 const { sendResponse } = require("../utils/response");
 
 const generateToken = (id) => {
+  console.log("JWT_SECRET =", process.env.JWT_SECRET);
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
-
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
 

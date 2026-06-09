@@ -72,8 +72,14 @@ exports.updateProducer = async (req, res) => {
     if (bio) dataToUpdate.bio = bio;
     if (image) dataToUpdate.image = image;
 
-    const updatedProducer = await Producer.findByIdAndUpdate(req.params.id, dataToUpdate);
+    // const updatedProducer = await Producer.findByIdAndUpdate(req.params.id, dataToUpdate);
 
+
+    const updatedProducer = await Producer.findByIdAndUpdate(
+  req.params.id,
+  dataToUpdate,
+  { new: true }
+);
     if (!updatedProducer) {
       return sendResponse(res, {
         statusCode: 404,
